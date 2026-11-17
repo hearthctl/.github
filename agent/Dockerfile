@@ -22,3 +22,15 @@ RUN TARBALL="helm-${HELM_VERSION}-linux-${TARGETARCH}.tar.gz" \
 COPY --from=ghcr.io/astral-sh/uv:0.13.9 /uv /uvx /usr/local/bin/
 
 USER agent
+
+# Skills for Codex, from geoberle/skillshare-config at a fixed commit.
+ARG SKILLS_COMMIT=e22fc36ab7a7df2487cece65021e899d9459c0dd
+RUN mkdir -p /home/agent/.codex/skills \
+    && curl -fsSL "https://codeload.github.com/geoberle/skillshare-config/tar.gz/${SKILLS_COMMIT}" \
+    | tar -xz -C /home/agent/.codex/skills --strip-components=2 \
+        "skillshare-config-${SKILLS_COMMIT}/library/tdd" \
+        "skillshare-config-${SKILLS_COMMIT}/library/pr" \
+        "skillshare-config-${SKILLS_COMMIT}/library/diagnosing-bugs" \
+        "skillshare-config-${SKILLS_COMMIT}/library/domain-modeling" \
+        "skillshare-config-${SKILLS_COMMIT}/library/codebase-design" \
+        "skillshare-config-${SKILLS_COMMIT}/library/implement"
