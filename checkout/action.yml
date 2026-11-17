@@ -1,0 +1,18 @@
+name: Checkout for verify
+description: Check out the current base branch of a pull request and merge the pull request on top.
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        ref: ${{ github.event.pull_request.base.ref }}
+        fetch-depth: 0
+    - shell: bash
+      env:
+        PR: ${{ github.event.pull_request.number }}
+      run: |
+        git fetch origin "pull/${PR}/head"
+        if ! git -c user.name=verify -c user.email=verify@hearthctl.invalid merge --no-ff --no-edit FETCH_HEAD; then
+          echo "::error::needs rebase: the pull request does not merge into the current base branch"
+          exit 1
+        fi

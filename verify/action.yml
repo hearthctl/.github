@@ -1,0 +1,12 @@
+name: Verify
+description: Run make verify, then make e2e when the repository defines it.
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: make verify
+    - shell: bash
+      run: |
+        if grep -q '^e2e:' Makefile; then
+          make e2e
+        fi

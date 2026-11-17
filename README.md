@@ -1,0 +1,34 @@
+# hearthctl/.github
+
+Shared CI for hearthctl repositories.
+
+## Verification contract
+
+Every repository exposes the same make targets:
+
+- `make verify` runs everything that needs no extra infrastructure: formatting,
+  linters, unit tests, build. It must pass before a pull request is opened.
+- `make e2e` is optional and holds what needs infrastructure. Only CI runs it.
+
+A pull request reports one check named `verify`. Each repository keeps a caller
+workflow whose `verify` job installs its toolchain between the two shared
+actions:
+
+```yaml
+name: CI
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: hearthctl/.github/checkout@main
+      # install the repository's toolchain here
+      - uses: hearthctl/.github/verify@main
+```
+
+`checkout` checks out the current tip of the pull request's base branch and
+merges the pull request on top. A merge conflict fails the check with a
+"needs rebase" message. `verify` runs `make verify` and then `make e2e` when
+the Makefile defines that target.
