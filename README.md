@@ -30,7 +30,9 @@ jobs:
 
 `checkout` checks out the current tip of the pull request's base branch and
 merges the pull request on top. A merge conflict fails the check with a
-"needs rebase" message. `verify` runs `make verify` and then `make e2e` when
+"needs rebase" message. Its `head` and `base` inputs name the two commits
+instead, so a manually triggered run can verify a pull request on a fixed base
+commit. `verify` runs `make verify` and then `make e2e` when
 the Makefile defines that target.
 
 ## Agent image
