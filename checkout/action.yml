@@ -9,9 +9,9 @@ runs:
         fetch-depth: 0
     - shell: bash
       env:
-        PR: ${{ github.event.pull_request.number }}
+        HEAD_SHA: ${{ github.event.pull_request.head.sha }}
       run: |
-        git fetch origin "pull/${PR}/head"
+        git fetch origin "${HEAD_SHA}"
         if ! git -c user.name=verify -c user.email=verify@hearthctl.invalid merge --no-ff --no-edit FETCH_HEAD; then
           echo "::error::needs rebase: the pull request does not merge into the current base branch"
           exit 1
