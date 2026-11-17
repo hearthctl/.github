@@ -32,3 +32,11 @@ jobs:
 merges the pull request on top. A merge conflict fails the check with a
 "needs rebase" message. `verify` runs `make verify` and then `make e2e` when
 the Makefile defines that target.
+
+## Agent image
+
+`agent/Dockerfile` extends the Kelos Codex worker image with the toolchains
+`make verify` needs in hearthctl repositories: a C and C++ compiler, Python 3,
+lz4, helm and uv. A `v*` tag publishes it as `ghcr.io/hearthctl/agent` for
+Linux amd64 and arm64. Name the tag after the Kelos release it builds on, with
+a counter: `v0.64.0-1`.
