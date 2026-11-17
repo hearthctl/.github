@@ -39,6 +39,12 @@ the Makefile defines that target.
 
 `agent/Dockerfile` extends the Kelos Codex worker image with the toolchains
 `make verify` needs in hearthctl repositories: a C and C++ compiler, Python 3,
-lz4, helm and uv. A `v*` tag publishes it as `ghcr.io/hearthctl/agent` for
-Linux amd64 and arm64. Name the tag after the Kelos release it builds on, with
-a counter: `v0.64.0-1`.
+lz4, helm and uv. It also carries Codex skills from
+[geoberle/skillshare-config](https://github.com/geoberle/skillshare-config) at
+the commit named by `SKILLS_COMMIT`: `tdd`, `pr`, `diagnosing-bugs`,
+`domain-modeling`, `codebase-design` and `implement`. To change a skill, raise
+`SKILLS_COMMIT` and publish a new image.
+
+A `v*` tag publishes the image as `ghcr.io/hearthctl/agent` for Linux amd64 and
+arm64. Name the tag after the Kelos release it builds on, with a counter:
+`v0.64.0-1`.
